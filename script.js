@@ -36,11 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const y = Math.floor(Math.random() * 60) + 20; // 20% - 80%
             const rot = Math.floor(Math.random() * 360);
             
-            el.style.width = `${size}px`;
-            el.style.height = `${size}px`;
-            el.style.left = `${x}%`;
-            el.style.top = `${y}%`;
-            el.style.transform = `rotate(${rot}deg)`;
+            el.style.setProperty('--size', `${size}px`);
+            el.style.setProperty('--left', `${x}%`);
+            el.style.setProperty('--top', `${y}%`);
+            el.style.setProperty('--base-rot', `${rot}deg`);
         }
 
         function refreshAll() {

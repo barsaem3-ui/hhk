@@ -128,6 +128,10 @@ body::before {
 
 .header-glass {
     position: absolute;
+    width: var(--size, 40px);
+    height: var(--size, 40px);
+    left: var(--left, 50%);
+    top: var(--top, 50%);
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -135,7 +139,13 @@ body::before {
     border-radius: 4px;
     z-index: 10;
     pointer-events: none;
-    transition: all 5s ease-in-out; /* Smooth transition for 30s updates */
+    transition: left 5s ease-in-out, top 5s ease-in-out, width 5s ease-in-out, height 5s ease-in-out;
+    animation: slowFloat 12s infinite alternate ease-in-out;
+}
+
+@keyframes slowFloat {
+    0% { transform: rotate(var(--base-rot, 0deg)) translate(0, 0); }
+    100% { transform: rotate(calc(var(--base-rot, 0deg) + 20deg)) translate(25px, 15px); }
 }
 
 .header-left {
