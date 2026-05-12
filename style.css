@@ -38,33 +38,41 @@ body {
     z-index: 1;
 }
 
-/* Animated Mesh Background */
-body::before {
-    content: '';
+/* Animated Floating Blobs Background */
+.bg-blobs {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden;
     z-index: -1;
     background: #0d3b0f;
-    background-image: 
-        radial-gradient(at 0% 0%, hsla(120, 100%, 25%, 0.5) 0, transparent 50%), 
-        radial-gradient(at 50% 0%, hsla(140, 100%, 30%, 0.5) 0, transparent 50%), 
-        radial-gradient(at 100% 0%, hsla(160, 100%, 20%, 0.5) 0, transparent 50%), 
-        radial-gradient(at 0% 50%, hsla(130, 100%, 15%, 0.5) 0, transparent 50%), 
-        radial-gradient(at 100% 50%, hsla(150, 100%, 25%, 0.5) 0, transparent 50%), 
-        radial-gradient(at 0% 100%, hsla(120, 100%, 20%, 0.5) 0, transparent 50%), 
-        radial-gradient(at 50% 100%, hsla(140, 100%, 15%, 0.5) 0, transparent 50%), 
-        radial-gradient(at 100% 100%, hsla(160, 100%, 30%, 0.5) 0, transparent 50%);
-    background-size: 200% 200%;
-    animation: meshBackground 15s ease infinite;
 }
 
-@keyframes meshBackground {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+.blob {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(76, 175, 80, 0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(60px);
+    animation: moveBlob 25s infinite alternate ease-in-out;
+}
+
+.blob:nth-child(1) { top: -10%; left: -10%; background: radial-gradient(circle, rgba(27, 94, 32, 0.5) 0%, transparent 70%); animation-duration: 30s; }
+.blob:nth-child(2) { bottom: -10%; right: -10%; background: radial-gradient(circle, rgba(129, 199, 132, 0.3) 0%, transparent 70%); animation-duration: 35s; animation-delay: -5s; }
+.blob:nth-child(3) { top: 50%; left: 50%; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(46, 125, 50, 0.4) 0%, transparent 70%); animation-duration: 40s; animation-delay: -10s; }
+
+@keyframes moveBlob {
+    0% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(10vw, 15vh) scale(1.2); }
+    66% { transform: translate(-5vw, 20vh) scale(0.8); }
+    100% { transform: translate(5vw, -5vh) scale(1.1); }
+}
+
+body::before {
+    display: none; /* Hide old static animation */
 }
 
 
@@ -675,28 +683,39 @@ td {
     min-width: 100px;
 }
 
-/* Edit Popup Specific */
-.edit-popup-content {
+/* Edit Popup Minimalist Glass */
+.edit-popup-glass {
     width: 500px !important;
     max-width: 90vw;
+    padding: 10px !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(25px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4) !important;
 }
 
 .edit-textarea {
     width: 100%;
-    height: 150px;
+    height: 120px;
     padding: 1rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin: 1rem 0;
-    resize: vertical;
+    font-size: 1.1rem;
+    border: none;
+    background: transparent;
+    color: white;
+    margin: 0;
+    resize: none;
     font-family: inherit;
     line-height: 1.5;
+    text-align: center;
+}
+
+.edit-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .edit-textarea:focus {
-    outline: 2px solid var(--primary-light);
-    border-color: transparent;
+    outline: none;
 }
 
 /* Left Align specific columns */

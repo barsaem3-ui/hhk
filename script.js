@@ -222,8 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const editPopupModal = document.getElementById('edit-popup-modal');
     const editPopupInput = document.getElementById('edit-popup-input');
-    const editPopupSave = document.getElementById('edit-popup-save');
-    const editPopupCancel = document.getElementById('edit-popup-cancel');
     
     let activeEditInput = null;
     let rowToDelete = null;
@@ -234,30 +232,48 @@ document.addEventListener('DOMContentLoaded', () => {
         activeEditInput = input;
         editPopupInput.value = input.value;
         editPopupModal.classList.remove('hidden');
-        setTimeout(() => editPopupInput.focus(), 100);
+        setTimeout(() => {
+            editPopupInput.focus();
+            editPopupInput.setSelectionRange(editPopupInput.value.length, editPopupInput.value.length);
+        }, 100);
     }
 
-    editPopupSave.addEventListener('click', () => {
+    function closeAndSaveEdit() {
         if (activeEditInput) {
             // Replace newlines with spaces for single-line input-field
-            activeEditInput.value = editPopupInput.value.replace(/\r?\n/g, ' ');
+            activeEditInput.value = editPopupInput.value.replace(/\r?\n/g, ' ').trim();
             
-            // Hide modal first
+            // Hide modal
             editPopupModal.classList.add('hidden');
             
-            // Slightly longer delay to ensure the modal's pointer-events/opacity transition doesn't interfere
+            // Adjust font size
             setTimeout(() => {
                 requestAnimationFrame(() => {
                     adjustFontSize(activeEditInput);
+                    // Trigger change to ensure auto-save picks it up
+                    activeEditInput.dispatchEvent(new Event('input', { bubbles: true }));
                 });
             }, 100);
         } else {
             editPopupModal.classList.add('hidden');
         }
+    }
+
+    // Save on Enter (Shift+Enter for newline if needed, but here we prefer single line)
+    editPopupInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            closeAndSaveEdit();
+        } else if (e.key === 'Escape') {
+            editPopupModal.classList.add('hidden');
+        }
     });
 
-    editPopupCancel.addEventListener('click', () => {
-        editPopupModal.classList.add('hidden');
+    // Save on click outside
+    editPopupModal.addEventListener('click', (e) => {
+        if (e.target === editPopupModal) {
+            closeAndSaveEdit();
+        }
     });
 
     // Keyboard navigation
