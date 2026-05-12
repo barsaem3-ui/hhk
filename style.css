@@ -132,7 +132,7 @@ body::before {
     height: var(--size, 40px);
     left: var(--left, 50%);
     top: var(--top, 50%);
-    background: var(--bg-color, rgba(255, 255, 255, 0.05));
+    background: var(--bg-color, rgba(255, 255, 255, 0.1)); /* 10% Opacity */
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: none !important;

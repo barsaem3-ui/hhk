@@ -35,13 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const y = Math.floor(Math.random() * 60) + 20; // 20% - 80%
             const rot = Math.floor(Math.random() * 360);
             
-            // Random Colors with 5% Opacity
+            // Random Colors with 10% Opacity
             const colors = [
-                'rgba(255, 255, 255, 0.05)', // White
-                'rgba(76, 175, 80, 0.05)',   // Green
-                'rgba(33, 150, 243, 0.05)',  // Blue
-                'rgba(156, 39, 176, 0.05)',  // Purple
-                'rgba(0, 188, 212, 0.05)'    // Cyan
+                'rgba(255, 255, 255, 0.1)', // White
+                'rgba(76, 175, 80, 0.1)',   // Green
+                'rgba(33, 150, 243, 0.1)',  // Blue
+                'rgba(156, 39, 176, 0.1)',  // Purple
+                'rgba(0, 188, 212, 0.1)'    // Cyan
             ];
             const color = colors[Math.floor(Math.random() * colors.length)];
             const dir = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 40) + 10); // Random degrees
