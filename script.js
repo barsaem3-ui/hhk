@@ -27,8 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Header Glass Logic
     function initHeaderGlass() {
-        const glass1 = document.getElementById('header-glass-1');
-        const glass2 = document.getElementById('header-glass-2');
+        const glasses = document.querySelectorAll('.header-glass');
 
         function updateGlass(el) {
             const size = Math.floor(Math.random() * 40) + 20; // 20px - 60px
@@ -36,15 +35,31 @@ document.addEventListener('DOMContentLoaded', () => {
             const y = Math.floor(Math.random() * 60) + 20; // 20% - 80%
             const rot = Math.floor(Math.random() * 360);
             
+            // Random Colors (Greenish, Bluish, Purplish, White)
+            const colors = [
+                'rgba(255, 255, 255, 0.15)', // White
+                'rgba(76, 175, 80, 0.2)',   // Green
+                'rgba(33, 150, 243, 0.2)',  // Blue
+                'rgba(156, 39, 176, 0.2)',  // Purple
+                'rgba(0, 188, 212, 0.2)'    // Cyan
+            ];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const dir = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 40) + 10); // Random degrees
+            const mx = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 30) + 10); // Random move X
+            const my = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 20) + 5);  // Random move Y
+
             el.style.setProperty('--size', `${size}px`);
             el.style.setProperty('--left', `${x}%`);
             el.style.setProperty('--top', `${y}%`);
             el.style.setProperty('--base-rot', `${rot}deg`);
+            el.style.setProperty('--bg-color', color);
+            el.style.setProperty('--dir', `${dir}deg`);
+            el.style.setProperty('--move-x', `${mx}px`);
+            el.style.setProperty('--move-y', `${my}px`);
         }
 
         function refreshAll() {
-            updateGlass(glass1);
-            updateGlass(glass2);
+            glasses.forEach(updateGlass);
         }
 
         refreshAll();

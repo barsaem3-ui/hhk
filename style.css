@@ -132,20 +132,20 @@ body::before {
     height: var(--size, 40px);
     left: var(--left, 50%);
     top: var(--top, 50%);
-    background: rgba(255, 255, 255, 0.15);
+    background: var(--bg-color, rgba(255, 255, 255, 0.15));
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 4px;
     z-index: 10;
     pointer-events: none;
-    transition: left 5s ease-in-out, top 5s ease-in-out, width 5s ease-in-out, height 5s ease-in-out;
-    animation: slowFloat 12s infinite alternate ease-in-out;
+    transition: left 5s ease-in-out, top 5s ease-in-out, width 5s ease-in-out, height 5s ease-in-out, background 5s ease-in-out;
+    animation: slowFloat 15s infinite alternate ease-in-out;
 }
 
 @keyframes slowFloat {
     0% { transform: rotate(var(--base-rot, 0deg)) translate(0, 0); }
-    100% { transform: rotate(calc(var(--base-rot, 0deg) + 20deg)) translate(25px, 15px); }
+    100% { transform: rotate(calc(var(--base-rot, 0deg) + var(--dir, 20deg))) translate(var(--move-x, 25px), var(--move-y, 15px)); }
 }
 
 .header-left {
