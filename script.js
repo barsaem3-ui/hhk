@@ -236,9 +236,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const glass = editPopupModal.querySelector('.edit-popup-glass');
         if (glass) {
             // Ensure popup doesn't go off screen
-            const padding = 20;
-            const glassWidth = 320;
-            let left = x - 20;
+            const padding = 10;
+            const glassWidth = 180;
+            let left = x - (glassWidth / 2); // Center on click
             let top = y - 20;
 
             if (left + glassWidth > window.innerWidth) left = window.innerWidth - glassWidth - padding;

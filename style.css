@@ -84,16 +84,46 @@ body::before {
 
 .app-header {
     position: relative;
-    background: var(--primary-green);
+    background: linear-gradient(90deg, #1b5e20, #0d3b0f, #1b5e20);
+    background-size: 200% 100%;
+    animation: headerGradient 10s linear infinite;
     overflow: hidden;
     color: white;
     padding: 0 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     height: 90px;
     z-index: 100;
+}
+
+/* Scanning Light Effect */
+.app-header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent
+    );
+    transform: skewX(-25deg);
+    animation: scanLight 4s infinite ease-in-out;
+}
+
+@keyframes scanLight {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
+
+@keyframes headerGradient {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
 }
 
 .header-left {
@@ -700,14 +730,15 @@ td {
 
 .edit-popup-glass {
     position: fixed;
-    width: 320px !important; /* Fixed width as requested */
-    min-height: 50px;
-    padding: 15px !important;
-    background: rgba(0, 80, 200, 0.25) !important; /* 25% Blue for better transparency */
-    backdrop-filter: blur(15px) saturate(150%) !important; /* Clearer glass effect */
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    width: 180px !important; /* Width reduced by half as requested */
+    min-height: 40px;
+    padding: 12px !important;
+    background: rgba(0, 120, 255, 0.1) !important; /* Ultra-transparent Blue */
+    backdrop-filter: blur(12px) !important; /* Thinner blur for more transparency */
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
     border-radius: 12px !important;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4) !important;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3) !important;
     pointer-events: auto;
     z-index: 2001;
     display: flex;
