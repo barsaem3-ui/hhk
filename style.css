@@ -132,10 +132,10 @@ body::before {
     height: var(--size, 40px);
     left: var(--left, 50%);
     top: var(--top, 50%);
-    background: var(--bg-color, rgba(255, 255, 255, 0.15));
+    background: var(--bg-color, rgba(255, 255, 255, 0.05)); /* 5% Opacity */
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: none !important; /* Transparent border */
     border-radius: 4px;
     z-index: 10;
     pointer-events: none;
