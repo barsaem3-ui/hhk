@@ -38,41 +38,45 @@ body {
     z-index: 1;
 }
 
-/* Animated Floating Blobs Background */
+/* High-Performance Aurora Background */
 .bg-blobs {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     overflow: hidden;
     z-index: -1;
-    background: #0d3b0f;
+    background: #040d1b; /* Deep night blue */
 }
 
 .blob {
     position: absolute;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(76, 175, 80, 0.4) 0%, transparent 70%);
-    border-radius: 50%;
-    filter: blur(60px);
-    animation: moveBlob 25s infinite alternate ease-in-out;
+    width: 120vw;
+    height: 120vh;
+    background: linear-gradient(120deg, 
+        rgba(0, 255, 127, 0.2) 0%, 
+        rgba(0, 200, 255, 0.2) 50%, 
+        rgba(100, 50, 255, 0.2) 100%);
+    filter: blur(80px);
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    transform-origin: center;
+    animation: auroraRotate 20s infinite alternate linear;
+    pointer-events: none;
 }
 
-.blob:nth-child(1) { top: -10%; left: -10%; background: radial-gradient(circle, rgba(27, 94, 32, 0.5) 0%, transparent 70%); animation-duration: 30s; }
-.blob:nth-child(2) { bottom: -10%; right: -10%; background: radial-gradient(circle, rgba(129, 199, 132, 0.3) 0%, transparent 70%); animation-duration: 35s; animation-delay: -5s; }
-.blob:nth-child(3) { top: 50%; left: 50%; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(46, 125, 50, 0.4) 0%, transparent 70%); animation-duration: 40s; animation-delay: -10s; }
+.blob:nth-child(1) { top: -50%; left: -50%; background: radial-gradient(circle, rgba(0, 255, 100, 0.3), transparent); animation-duration: 25s; }
+.blob:nth-child(2) { bottom: -50%; right: -50%; background: radial-gradient(circle, rgba(0, 150, 255, 0.3), transparent); animation-duration: 30s; animation-delay: -5s; }
+.blob:nth-child(3) { top: 20%; left: 10%; width: 150vw; height: 150vh; background: radial-gradient(circle, rgba(150, 50, 255, 0.2), transparent); animation-duration: 40s; animation-delay: -10s; }
 
-@keyframes moveBlob {
-    0% { transform: translate(0, 0) scale(1); }
-    33% { transform: translate(10vw, 15vh) scale(1.2); }
-    66% { transform: translate(-5vw, 20vh) scale(0.8); }
-    100% { transform: translate(5vw, -5vh) scale(1.1); }
+@keyframes auroraRotate {
+    0% { transform: rotate(0deg) scale(1) translate(0, 0); }
+    50% { transform: rotate(180deg) scale(1.2) translate(10%, 10%); }
+    100% { transform: rotate(360deg) scale(1) translate(-10%, -10%); }
 }
 
 body::before {
-    display: none; /* Hide old static animation */
+    display: none;
 }
 
 
@@ -683,16 +687,29 @@ td {
     min-width: 100px;
 }
 
-/* Edit Popup Minimalist Glass */
+/* Edit Popup Blue Glass */
+#edit-popup-modal {
+    display: block; /* Overriding flex to use absolute positioning for content */
+    pointer-events: none;
+}
+
+#edit-popup-modal.hidden {
+    display: none;
+}
+
 .edit-popup-glass {
-    width: 500px !important;
+    position: fixed;
+    width: 400px !important;
     max-width: 90vw;
     padding: 10px !important;
-    background: rgba(255, 255, 255, 0.2) !important;
-    backdrop-filter: blur(25px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    border-radius: 20px !important;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4) !important;
+    background: rgba(0, 102, 204, 0.3) !important; /* 30% Blue */
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 15px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+    pointer-events: auto;
+    z-index: 2001;
+    transform: translate(-20%, -20%); /* Slight offset from cursor */
 }
 
 .edit-textarea {

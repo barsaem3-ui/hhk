@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (fontSize && fontSize < 0.8) { // Shrunk
                 e.preventDefault();
                 e.stopPropagation();
-                openEditPopup(e.target);
+                openEditPopup(e.target, e.clientX, e.clientY);
             }
         }
     });
@@ -228,9 +228,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let commentRowToDelete = null;
     let modalContext = ''; // 'delete-row' or 'save-widths'
 
-    function openEditPopup(input) {
+    function openEditPopup(input, x, y) {
         activeEditInput = input;
         editPopupInput.value = input.value;
+        
+        // Position popup at cursor
+        const glass = editPopupModal.querySelector('.edit-popup-glass');
+        if (glass) {
+            glass.style.left = `${x}px`;
+            glass.style.top = `${y}px`;
+        }
+
         editPopupModal.classList.remove('hidden');
         setTimeout(() => {
             editPopupInput.focus();
