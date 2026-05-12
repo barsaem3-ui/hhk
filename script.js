@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.setProperty('--dir', `${dir}deg`);
             el.style.setProperty('--move-x', `${mx}px`);
             el.style.setProperty('--move-y', `${my}px`);
+            el.style.setProperty('--duration', `${Math.floor(Math.random() * 20) + 5}s`); // 5s to 25s
         }
 
         function refreshAll() {

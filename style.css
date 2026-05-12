@@ -132,15 +132,15 @@ body::before {
     height: var(--size, 40px);
     left: var(--left, 50%);
     top: var(--top, 50%);
-    background: var(--bg-color, rgba(255, 255, 255, 0.05)); /* 5% Opacity */
+    background: var(--bg-color, rgba(255, 255, 255, 0.05));
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border: none !important; /* Transparent border */
+    border: none !important;
     border-radius: 4px;
     z-index: 10;
     pointer-events: none;
     transition: left 5s ease-in-out, top 5s ease-in-out, width 5s ease-in-out, height 5s ease-in-out, background 5s ease-in-out;
-    animation: slowFloat 15s infinite alternate ease-in-out;
+    animation: slowFloat var(--duration, 15s) infinite alternate ease-in-out;
 }
 
 @keyframes slowFloat {
