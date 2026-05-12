@@ -1,0 +1,925 @@
+:root {
+    --primary-green: #1b5e20;
+    --primary-light: #4caf50;
+    --primary-dark: #0d3b0f;
+    --bg-color: #f4f7f6;
+    --surface-color: #ffffff;
+    --text-main: #2d3436;
+    --text-muted: #636e72;
+    --border-color: #dfe6e9;
+    --danger-color: #d63031;
+    --danger-light: #fab1a0;
+    --accent-blue: #0984e3;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    overflow: hidden; /* Prevent page scrolling */
+}
+
+/* App Layout */
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    max-width: none;
+    margin: 0;
+    background-color: var(--surface-color);
+}
+
+
+/* Mesh gradient removed to fix button click issues */
+
+.app-header {
+    position: relative;
+    background: var(--primary-green);
+    overflow: hidden;
+    color: white;
+    padding: 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    height: 90px;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo {
+    height: 80px;
+    width: auto;
+    object-fit: contain;
+    mix-blend-mode: screen;
+    margin: 0;
+    display: block;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#sync-status {
+    font-size: 0.75rem;
+    color: #a5d6a7;
+    margin-left: 8px;
+    background: rgba(255,255,255,0.1);
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.app-content {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    background-color: var(--surface-color);
+}
+
+.table-container {
+    flex: 1;
+    overflow: auto;
+    background-color: var(--surface-color);
+}
+
+/* Scrollbar Styling */
+.table-container::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+.table-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 5px;
+}
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+.app-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background-color: white;
+    border-top: 1px solid var(--border-color);
+    z-index: 10;
+}
+
+.company-logo {
+    max-height: 50px;
+    object-fit: contain;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1000px;
+    table-layout: fixed;
+}
+
+thead th {
+    background: linear-gradient(to bottom, #f9f9f9, #e0e0e0);
+    color: #333;
+    text-align: center;
+    padding: 0.1rem 0.2rem;
+    font-weight: 600;
+    font-size: 0.7rem;
+    line-height: 1.2;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    border: 1px solid #999;
+    box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #bbb;
+    user-select: none;
+}
+
+.resizer {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5px;
+    height: 100%;
+    cursor: col-resize;
+    user-select: none;
+    z-index: 1;
+}
+.resizer:hover, .resizer:active {
+    background-color: rgba(0,0,0,0.2);
+}
+
+tbody tr.data-row {
+    background-color: #fff;
+}
+
+tbody tr.data-row:hover {
+    background-color: #f0f8ff;
+}
+
+td {
+    padding: 0;
+    vertical-align: middle;
+    border: 1px solid #ccc;
+}
+
+.col-actions {
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Inputs within table */
+.input-field {
+    width: 100%;
+    height: 100%;
+    padding: 0.1rem 0.2rem;
+    border: none;
+    border-radius: 0;
+    font-size: 0.7rem;
+    line-height: 1.2;
+    background: transparent;
+    text-align: center;
+    color: #000;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.col-content .input-field, .col-part .input-field, .col-project .input-field, .col-client .input-field {
+    text-align: left;
+    padding-left: 0.5rem;
+}
+
+.input-field:focus {
+    outline: 2px solid #217346;
+    outline-offset: -2px;
+    background-color: #fff;
+}
+
+/* Filter Styling */
+.th-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 2px;
+}
+
+.th-content span {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.btn-filter {
+    background: none;
+    border: 1px solid transparent;
+    color: #888;
+    font-size: 0.6rem;
+    cursor: pointer;
+    padding: 0 2px;
+    margin-left: 2px;
+}
+
+.btn-filter:hover {
+    background-color: #ddd;
+    border: 1px solid #bbb;
+    border-radius: 2px;
+}
+
+.btn-filter.active {
+    color: #ffffff;
+    background-color: #217346;
+    font-weight: bold;
+    border-radius: 2px;
+}
+
+/* Filter Popup Styles */
+.filter-popup.hidden {
+    display: none;
+}
+.filter-popup {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #999;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+    padding: 8px;
+    border-radius: 0;
+    min-width: 150px;
+    font-size: 0.8rem;
+}
+
+.filter-popup-search {
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+}
+
+.filter-popup-search input {
+    width: 100%;
+    padding: 4px;
+    font-size: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+}
+
+.filter-popup-header {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.filter-popup-header label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.filter-popup-list {
+    max-height: 150px;
+    overflow-y: auto;
+    margin-bottom: 8px;
+}
+
+.filter-popup-list label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 3px;
+    cursor: pointer;
+}
+
+.filter-popup-list input[type="checkbox"],
+.filter-popup-header input[type="checkbox"] {
+    margin-right: 6px;
+}
+
+.filter-popup-actions {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #eee;
+    padding-top: 5px;
+    gap: 5px;
+}
+
+.col-no {
+    width: 50px;
+}
+.col-no .input-field {
+    text-align: center;
+    padding-left: 0;
+}
+
+
+
+
+
+/* Buttons */
+.btn {
+    padding: 0.4rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-delete-comment {
+    background: none;
+    border: none;
+    color: #ff5252;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0 4px;
+    line-height: 1;
+}
+
+.btn-delete-comment:hover {
+    color: #d32f2f;
+}
+
+.btn-primary {
+    background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
+    color: var(--primary-green);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.btn-primary:hover {
+    background: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    color: var(--primary-light);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+    color: white;
+    border: none;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,132,255,0.3);
+}
+
+.btn-icon {
+    padding: 0.1rem;
+    background: transparent;
+    font-size: 0.9rem;
+    border-radius: 4px;
+}
+
+.btn-comment:hover { background-color: #e3f2fd; }
+.btn-delete:hover { background-color: var(--danger-light); }
+
+.btn-outline {
+    background-color: transparent;
+    border: 1px solid #ccc;
+    color: var(--text-main);
+}
+.btn-outline:hover { background-color: #f5f5f5; }
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+.btn-danger:hover { background-color: #b71c1c; }
+
+/* Comment Section */
+.comment-row {
+    background-color: #fff;
+}
+
+.comment-row.hidden {
+    display: none;
+}
+
+.comment-section {
+    padding: 0;
+    margin-left: 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.comment-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 5px;
+    gap: 8px;
+}
+
+.comment-item {
+    background-color: transparent;
+    padding: 2px 4px;
+    border-bottom: none;
+    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.comment-input-field {
+    border: none;
+    background: #FCDA94;
+    padding: 0 0.5ch; /* Total 1ch extra space balanced on both sides */
+    border-radius: 4px;
+    font-size: 0.75rem;
+    min-width: 40px;
+    width: auto;
+    text-align: left;
+}
+
+.btn-reply-comment {
+    background: none;
+    border: none;
+    color: #0084ff;
+    cursor: pointer;
+    font-size: 0.7rem;
+    padding: 0 4px;
+    text-decoration: underline;
+}
+
+.btn-reply-comment:hover {
+    color: #0056b3;
+}
+
+.comment-input-field:focus {
+    outline: 1px solid #0084ff;
+    background: #fff;
+}
+
+.shrunk-text {
+    cursor: pointer !important;
+}
+
+.comment-prefix-arrow {
+    color: #ff5252;
+    font-weight: bold;
+    font-family: monospace;
+}
+
+.comment-prefix-next {
+    color: #0084ff;
+    font-weight: bold;
+}
+
+.comment-timestamp {
+    font-size: 80%;
+    color: rgba(0,0,0,0.5);
+    margin-right: 6px;
+    font-family: var(--font-main);
+    white-space: nowrap;
+}
+
+.btn-reply {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.3rem;
+    margin-left: 10px;
+    background: #e0e0e0;
+    border: none;
+    cursor: pointer;
+    border-radius: 2px;
+}
+.btn-reply:hover { background: #d0d0d0; }
+
+.comment-prefix {
+    color: #ff5252;
+    font-weight: bold;
+    margin-right: 5px;
+    font-family: monospace;
+}
+
+.comment-meta {
+    color: #333;
+    font-weight: 600;
+}
+.comment-meta span.date {
+    color: #0055aa;
+    margin-left: 0.5rem;
+    font-weight: normal;
+}
+.comment-meta span.new-icon {
+    background-color: red;
+    color: white;
+    font-size: 0.6rem;
+    padding: 0 2px;
+    margin-left: 0.2rem;
+    border-radius: 2px;
+}
+
+.comment-actions {
+    color: #888;
+}
+.comment-actions span {
+    cursor: pointer;
+}
+.comment-actions span:hover {
+    text-decoration: underline;
+    color: #333;
+}
+
+.comment-text {
+    color: var(--text-main);
+    padding-left: 0.5rem;
+}
+
+.comment-input-area {
+    display: flex;
+    gap: 0.5rem;
+    padding: 2px 0.5rem; /* Reduced vertical padding */
+    background-color: #fafafa;
+    width: 50%;
+    margin-top: 2px;
+}
+
+.comment-input {
+    flex: 1;
+    padding: 2px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.72rem;
+}
+
+.comment-input:focus {
+    outline: none;
+    border-color: #999;
+}
+
+.btn-submit-comment {
+    background-color: white;
+    border: 1px solid #ccc;
+    color: #333;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+}
+.btn-submit-comment:hover {
+    background-color: #f0f0f0;
+}
+
+/* Modal Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 1;
+    transition: opacity 0.3s;
+}
+
+.modal-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transform: translateY(0);
+    transition: transform 0.3s;
+}
+
+.modal-overlay.hidden .modal-content {
+    transform: translateY(-20px);
+}
+
+.modal-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.modal-content h2 {
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+}
+
+.modal-content p {
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.modal-actions .btn {
+    min-width: 100px;
+}
+
+/* Edit Popup Specific */
+.edit-popup-content {
+    width: 500px !important;
+    max-width: 90vw;
+}
+
+.edit-textarea {
+    width: 100%;
+    height: 150px;
+    padding: 1rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin: 1rem 0;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+.edit-textarea:focus {
+    outline: 2px solid var(--primary-light);
+    border-color: transparent;
+}
+
+/* Left Align specific columns */
+.col-part .input-field,
+.col-drawing .input-field,
+.col-content .input-field,
+.col-process .input-field,
+.col-client .input-field {
+    text-align: left;
+    padding-left: 5px;
+}
+
+/* Default Korean IME */
+.col-project .input-field,
+.col-part .input-field,
+.col-content .input-field,
+.col-process .input-field,
+.col-client .input-field {
+    ime-mode: active;
+}
+/* Print Styling */
+@media print {
+    body {
+        overflow: visible;
+        background: white;
+    }
+    
+    /* Header for print */
+    .app-header {
+        background: white !important;
+        color: black !important;
+        box-shadow: none;
+        padding: 0.5rem 0;
+        border-bottom: 2px solid #333;
+        -webkit-print-color-adjust: exact;
+    }
+    
+    .header-logo {
+        height: 60px;
+        filter: invert(1) hue-rotate(180deg); /* Make logo visible on white background if it was silver/green */
+        mix-blend-mode: multiply;
+        display: block !important;
+    }
+    
+    .header-right, .btn, .resizer, .btn-filter, .cell-no, .col-actions, .col-delete-row, th:last-child, th:nth-last-child(2) {
+        display: none !important;
+    }
+
+    /* We need to re-show columns we want to keep if we hid too many above */
+    th.col-actions, td.col-actions { display: none !important; }
+    th:has(.th-content span:contains("삭제")), td.col-delete-row { display: none !important; }
+    
+    /* Better table for print */
+    .app-container {
+        display: block;
+        height: auto;
+    }
+    
+    .app-content {
+        display: block;
+        overflow: visible;
+    }
+    
+    .table-container {
+        overflow: visible;
+    }
+    
+    table {
+        min-width: 100%;
+        table-layout: auto;
+    }
+    
+    thead th {
+        position: static;
+        background: #f0f0f0 !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact;
+    }
+    
+    td {
+        border: 1px solid #666;
+    }
+    
+    .input-field {
+        background: transparent !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact;
+    }
+    
+    .comment-row {
+        display: table-row !important; /* Ensure it shows in print */
+        visibility: visible !important;
+    }
+    
+    .comment-row.hidden {
+        display: none !important;
+    }
+
+    /* Spacer td for alignment */
+    .comment-row td[colspan="3"] {
+        display: table-cell !important;
+        border: none !important;
+    }
+
+    .comment-section {
+        background: white !important;
+        border: 1px solid #eee !important;
+        padding: 5px !important;
+        -webkit-print-color-adjust: exact;
+    }
+    
+    .comment-item {
+        display: block !important;
+        border-bottom: 1px solid #f0f0f0 !important;
+        padding: 4px 0 !important;
+    }
+
+    .comment-prefix {
+        display: inline !important;
+        color: #ff5252 !important;
+        -webkit-print-color-adjust: exact;
+    }
+    
+    .comment-meta, .comment-text {
+        display: inline !important;
+    }
+    
+    .comment-input-area, .comment-actions {
+        display: none !important;
+    }
+    
+    /* Ensure only the headers we want are visible */
+    /* Headers order: No(0), 날짜(1), 사업명(2), 부품명(3), 도번(4), 수량(5), 내용(6), 처리(7), 처리일자(8), 완료(11), 완료일자(9), 댓글(10), 삭제(12) */
+    /* In the HTML, the order is: 0-8, 11, 9, 10, 12 */
+    
+    th:nth-child(1), td:nth-child(1) { display: none !important; } /* Hide No */
+    th:nth-child(11), td:nth-child(11) { display: none !important; } /* Hide 댓글 button column */
+    th:nth-child(12), td:nth-child(12) { display: none !important; } /* Hide 삭제 column */
+}
+/* Login Screen Styles */
+.login-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(135deg, #1b5e20 0%, #0d3b0f 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.login-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.login-header h1 {
+    font-size: 1.5rem;
+    color: var(--primary-green);
+    margin-bottom: 0.5rem;
+}
+
+.login-header p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+}
+
+.login-logo {
+    width: 120px;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+.btn-block {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    margin-top: 1rem;
+}
+
+.login-error {
+    color: var(--danger-color);
+    background: #ffebee;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    margin-top: 1rem;
+}
+
+.login-footer {
+    margin-top: 2rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 480px) {
+    .login-card {
+        padding: 1.5rem;
+        max-width: 90%;
+    }
+    
+    .app-header {
+        height: 70px;
+        padding: 0 1rem;
+    }
+    
+    .header-logo {
+        height: 50px;
+    }
+    
+    .header-right .btn {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+    }
+}

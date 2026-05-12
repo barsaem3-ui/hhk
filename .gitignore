@@ -1,0 +1,9 @@
+node_modules/
+dist/
+*.log
+.env
+window-settings.json
+0. 메모.xlsx
+*.bat
+*.exe
+.DS_Store
