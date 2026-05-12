@@ -235,12 +235,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // Position popup at cursor
         const glass = editPopupModal.querySelector('.edit-popup-glass');
         if (glass) {
-            glass.style.left = `${x}px`;
-            glass.style.top = `${y}px`;
+            // Ensure popup doesn't go off screen
+            const padding = 20;
+            const glassWidth = 320;
+            let left = x - 20;
+            let top = y - 20;
+
+            if (left + glassWidth > window.innerWidth) left = window.innerWidth - glassWidth - padding;
+            if (left < padding) left = padding;
+            
+            glass.style.left = `${left}px`;
+            glass.style.top = `${top}px`;
         }
 
         editPopupModal.classList.remove('hidden');
+        
+        // Auto-resize textarea to fit content
         setTimeout(() => {
+            editPopupInput.style.height = 'auto';
+            editPopupInput.style.height = editPopupInput.scrollHeight + 'px';
             editPopupInput.focus();
             editPopupInput.setSelectionRange(editPopupInput.value.length, editPopupInput.value.length);
         }, 100);
@@ -267,7 +280,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Save on Enter (Shift+Enter for newline if needed, but here we prefer single line)
+    // Auto-resize on input
+    editPopupInput.addEventListener('input', () => {
+        editPopupInput.style.height = 'auto';
+        editPopupInput.style.height = editPopupInput.scrollHeight + 'px';
+    });
+
+    // Save on Enter (Shift+Enter for newline if needed)
     editPopupInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -279,6 +298,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Save on click outside
     editPopupModal.addEventListener('click', (e) => {
+        // Only close if clicking the background overlay, not the glass panel itself
         if (e.target === editPopupModal) {
             closeAndSaveEdit();
         }

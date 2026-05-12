@@ -689,8 +689,9 @@ td {
 
 /* Edit Popup Blue Glass */
 #edit-popup-modal {
-    display: block; /* Overriding flex to use absolute positioning for content */
-    pointer-events: none;
+    display: block; 
+    pointer-events: auto; /* Fixed: Allow clicks to catch "outside" clicks */
+    background: rgba(0, 0, 0, 0.1); /* Very subtle overlay */
 }
 
 #edit-popup-modal.hidden {
@@ -699,32 +700,35 @@ td {
 
 .edit-popup-glass {
     position: fixed;
-    width: 400px !important;
-    max-width: 90vw;
-    padding: 10px !important;
-    background: rgba(0, 102, 204, 0.3) !important; /* 30% Blue */
-    backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 15px !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+    width: 320px !important; /* Fixed width as requested */
+    min-height: 50px;
+    padding: 15px !important;
+    background: rgba(0, 80, 200, 0.25) !important; /* 25% Blue for better transparency */
+    backdrop-filter: blur(15px) saturate(150%) !important; /* Clearer glass effect */
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.4) !important;
     pointer-events: auto;
     z-index: 2001;
-    transform: translate(-20%, -20%); /* Slight offset from cursor */
+    display: flex;
+    flex-direction: column;
 }
 
 .edit-textarea {
     width: 100%;
-    height: 120px;
-    padding: 1rem;
-    font-size: 1.1rem;
+    min-height: 40px;
+    height: auto;
+    padding: 0;
+    font-size: 1rem;
     border: none;
     background: transparent;
     color: white;
     margin: 0;
     resize: none;
     font-family: inherit;
-    line-height: 1.5;
-    text-align: center;
+    line-height: 1.4;
+    text-align: left; /* Left aligned as requested */
+    overflow: hidden; /* Hide scrollbar for auto-resize */
 }
 
 .edit-textarea::placeholder {
