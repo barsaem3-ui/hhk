@@ -22,6 +22,34 @@ document.addEventListener('DOMContentLoaded', () => {
         appContainer.classList.remove('hidden');
         // Load data once authenticated
         loadData();
+        initHeaderGlass();
+    }
+
+    // Header Glass Logic
+    function initHeaderGlass() {
+        const glass1 = document.getElementById('header-glass-1');
+        const glass2 = document.getElementById('header-glass-2');
+
+        function updateGlass(el) {
+            const size = Math.floor(Math.random() * 40) + 20; // 20px - 60px
+            const x = Math.floor(Math.random() * 80) + 10; // 10% - 90%
+            const y = Math.floor(Math.random() * 60) + 20; // 20% - 80%
+            const rot = Math.floor(Math.random() * 360);
+            
+            el.style.width = `${size}px`;
+            el.style.height = `${size}px`;
+            el.style.left = `${x}%`;
+            el.style.top = `${y}%`;
+            el.style.transform = `rotate(${rot}deg)`;
+        }
+
+        function refreshAll() {
+            updateGlass(glass1);
+            updateGlass(glass2);
+        }
+
+        refreshAll();
+        setInterval(refreshAll, 30000); // 30 seconds
     }
 
     loginBtn.addEventListener('click', () => {

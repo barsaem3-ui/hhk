@@ -126,6 +126,18 @@ body::before {
     100% { background-position: 200% 50%; }
 }
 
+.header-glass {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    z-index: 10;
+    pointer-events: none;
+    transition: all 5s ease-in-out; /* Smooth transition for 30s updates */
+}
+
 .header-left {
     display: flex;
     align-items: center;
