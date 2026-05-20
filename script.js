@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     e.target.value = val.substring(0, 2) + '/' + val.substring(2, 4);
                 }
             }
+            autoSaveData(); // Trigger immediate save on any input field change
         }
     });
 
@@ -419,6 +420,30 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentFilterCol = -1;
     let activeFilters = {}; // { colIndex: [array of allowed values] }
 
+    // Load activeFilters from localStorage on startup
+    try {
+        const savedFilters = localStorage.getItem('activeFilters');
+        if (savedFilters) {
+            activeFilters = JSON.parse(savedFilters);
+        }
+    } catch (e) {
+        console.error('Failed to load activeFilters from localStorage:', e);
+    }
+
+    function updateFilterButtonsVisualState() {
+        const filterBtns = document.querySelectorAll('.btn-filter');
+        filterBtns.forEach(btn => {
+            const col = parseInt(btn.getAttribute('data-col'));
+            if (activeFilters[col]) {
+                btn.classList.add('active');
+                btn.style.color = 'red';
+            } else {
+                btn.classList.remove('active');
+                btn.style.color = '';
+            }
+        });
+    }
+
     const filterBtns = document.querySelectorAll('.btn-filter');
     filterBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -432,6 +457,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Apply visual state of filters on startup
+    updateFilterButtonsVisualState();
 
     document.addEventListener('click', (e) => {
         if (!filterPopup.classList.contains('hidden') && !filterPopup.contains(e.target)) {
@@ -554,6 +582,13 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.style.color = activeFilters[currentFilterCol] ? 'red' : '';
         }
         
+        // Save filters to localStorage
+        try {
+            localStorage.setItem('activeFilters', JSON.stringify(activeFilters));
+        } catch (e) {
+            console.error('Failed to save activeFilters to localStorage:', e);
+        }
+        
         filterPopup.classList.add('hidden');
         applyTableFilters();
     });
@@ -565,6 +600,14 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.remove('active');
             btn.style.color = '';
         }
+        
+        // Save filters to localStorage
+        try {
+            localStorage.setItem('activeFilters', JSON.stringify(activeFilters));
+        } catch (e) {
+            console.error('Failed to save activeFilters to localStorage:', e);
+        }
+        
         filterPopup.classList.add('hidden');
         applyTableFilters();
     });
@@ -577,9 +620,10 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const cells = row.querySelectorAll('td');
             for (let col in activeFilters) {
+                const colIdx = parseInt(col, 10);
                 const allowed = activeFilters[col];
-                const input = cells[col].querySelector('.input-field');
-                const checkbox = cells[col].querySelector('.complete-checkbox');
+                const input = cells[colIdx].querySelector('.input-field');
+                const checkbox = cells[colIdx].querySelector('.complete-checkbox');
                 
                 let val = '';
                 if (input) {
@@ -740,6 +784,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         input.addEventListener('input', updateWidth);
+        input.addEventListener('change', autoSaveData);
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 input.blur();
@@ -916,6 +961,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             updateCompletionStyle();
             applyTableFilters();
+            autoSaveData(); // Trigger immediate save
         });
 
         const deleteRowBtn = dataRow.querySelector('.btn-delete-row');
@@ -1092,6 +1138,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 commentRowToDelete.remove();
             }
             updateRowNumbers();
+            autoSaveData(); // Trigger immediate save
         } else if (modalContext === 'save-widths') {
             const allThs = document.querySelectorAll('#data-table th');
             allThs.forEach((th, i) => {
@@ -1102,6 +1149,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const container = activeCommentToDelete.parentElement;
                 activeCommentToDelete.remove();
                 updateCountInRow(container);
+                autoSaveData(); // Trigger immediate save
             }
         } else if (modalContext === 'delete-linked-comments') {
             if (activeCommentToDelete) {
@@ -1113,6 +1161,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 recalculateCommentPrefixes(container);
                 updateCountInRow(container);
+                autoSaveData(); // Trigger immediate save
             }
         }
         
