@@ -8,7 +8,7 @@
   "description": "EASTSAT Business Management Tool",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/2910/2910768.png",
+      "src": "app_icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
