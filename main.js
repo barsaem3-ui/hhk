@@ -2,7 +2,9 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
-const DATA_FILE = path.join(__dirname, 'data.json');
+const DATA_FILE = app.isPackaged 
+  ? path.join(path.dirname(process.execPath), 'data.json') 
+  : path.join(__dirname, 'data.json');
 
 function createWindow () {
   const mainWindow = new BrowserWindow({
@@ -15,7 +17,11 @@ function createWindow () {
     }
   });
 
-  mainWindow.loadFile('index.html');
+  // Try to load from local server first, fallback to local file if server is offline
+  mainWindow.loadURL('http://127.0.0.1:3000').catch(() => {
+    console.log("Local Express server is not running. Falling back to offline local file mode.");
+    mainWindow.loadFile('index.html');
+  });
 }
 
 app.whenReady().then(() => {

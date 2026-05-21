@@ -1021,25 +1021,77 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Unified Data Handling (Electron + Web)
+    // Unified Data Handling (Electron + Web)
     async function fetchData() {
+        // 1. If we are running on http/https (directly served by server), always use relative path
+        if (window.location.protocol !== 'file:') {
+            const response = await fetch('/api/data');
+            if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                throw new Error(errData.error || `HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        }
+
+        // 2. If we are running under file:// protocol (local file in browser or Electron fallback)
+        // Try to fetch from the local Express server first
+        try {
+            const response = await fetch('http://127.0.0.1:3000/api/data');
+            if (response.ok) {
+                return await response.json();
+            }
+        } catch (e) {
+            console.log("Local Express server is offline. Using local storage.");
+        }
+
+        // 3. Fallback to local Electron IPC storage if in Electron, otherwise throw
         if (window.electronAPI) {
             return await window.electronAPI.loadData();
         } else {
-            const response = await fetch('/api/data');
-            return await response.json();
+            throw new Error("Server is offline and local Electron storage is unavailable.");
         }
     }
 
     async function saveData(rows) {
-        if (window.electronAPI) {
-            return await window.electronAPI.saveData(rows);
-        } else {
+        // 1. If we are running on http/https (directly served by server), always use relative path
+        if (window.location.protocol !== 'file:') {
             const response = await fetch('/api/data', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(rows)
             });
-            return await response.json();
+            if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                throw new Error(errData.error || `HTTP error! status: ${response.status}`);
+            }
+            const resData = await response.json();
+            if (!resData.success) {
+                throw new Error(resData.error || 'Server failed to save');
+            }
+            return resData;
+        }
+
+        // 2. If we are running under file:// protocol
+        // Try to save to the local Express server first
+        try {
+            const response = await fetch('http://127.0.0.1:3000/api/data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(rows)
+            });
+            if (response.ok) {
+                const resData = await response.json();
+                if (resData.success) return resData;
+            }
+        } catch (e) {
+            console.log("Local Express server is offline. Saving locally.");
+        }
+
+        // 3. Fallback to local Electron IPC storage if in Electron, otherwise throw
+        if (window.electronAPI) {
+            return await window.electronAPI.saveData(rows);
+        } else {
+            throw new Error("Server is offline and local Electron storage is unavailable.");
         }
     }
 
