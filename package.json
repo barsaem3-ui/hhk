@@ -27,7 +27,8 @@
     "appId": "com.eastsat.app",
     "productName": "EASTSAT",
     "win": {
-      "target": "portable"
+      "target": "portable",
+      "icon": "logo.png"
     }
   }
 }
