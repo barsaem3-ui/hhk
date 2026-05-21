@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const addBtn = document.getElementById('add-btn');
     const printBtn = document.getElementById('print-btn');
+    const xlsxBtn = document.getElementById('xlsx-btn');
     const rowTemplate = document.getElementById('row-template');
 
     // Auto format dates and numeric validation
@@ -1018,6 +1019,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listener for printing
     printBtn.addEventListener('click', () => {
         window.print();
+    });
+
+    // Event listener for saving to Excel
+    xlsxBtn.addEventListener('click', () => {
+        try {
+            const rows = gatherRows();
+            if (rows.length === 0) {
+                alert("내보낼 데이터가 없습니다.");
+                return;
+            }
+            
+            // SheetJS를 이용해 엑셀 워크시트 생성
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "EASTSAT");
+            
+            // 다운로드 트리거
+            XLSX.writeFile(workbook, "0. 메모.xlsx");
+            
+            // 상태 메시지 변경
+            if (syncStatus) {
+                syncStatus.textContent = '● 엑셀 다운로드 완료';
+                syncStatus.style.color = '#81c784';
+                setTimeout(() => {
+                    syncStatus.textContent = '● 자동 저장됨';
+                }, 3000);
+            }
+        } catch (error) {
+            console.error("Excel export error:", error);
+            alert("엑셀 저장 중 오류가 발생했습니다: " + error.message);
+        }
     });
 
     // Unified Data Handling (Electron + Web)
