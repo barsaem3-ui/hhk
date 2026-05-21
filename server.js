@@ -17,6 +17,32 @@ let supabase = null;
 if (SUPABASE_URL && SUPABASE_KEY) {
     console.log("Supabase credentials detected. Running in cloud database mode.");
     supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    // One-time automated migration logic
+    async function performMigration() {
+        try {
+            console.log("=== STARTING ONE-TIME DATA MIGRATION TO SUPABASE ===");
+            const localData = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8') || '[]');
+            
+            if (localData && localData.length > 0) {
+                const { error } = await supabase
+                    .from('eastsat_management')
+                    .upsert({ id: 1, data: localData, updated_at: new Date() });
+
+                if (error) {
+                    console.error("Migration Failed:", error);
+                } else {
+                    console.log("=== MIGRATION COMPLETED SUCCESSFULLY ===");
+                    console.log(`Migrated ${localData.length} rows to Supabase.`);
+                }
+            } else {
+                console.log("Migration skipped: Local data.json is empty.");
+            }
+        } catch (err) {
+            console.error("Migration Error:", err);
+        }
+    }
+    performMigration();
 } else {
     console.log("Supabase credentials not found. Running in local JSON file mode.");
 }
